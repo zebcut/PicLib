@@ -60,8 +60,10 @@ Whatever you change, these hold:
 
 Grab the `.dmg` from the [Releases](../../releases) page.
 
-The app is not signed with an Apple Developer ID, so macOS will complain the
-first time. Right-click `PicLib.app` → **Open** → **Open**, or run:
+The app is ad-hoc signed but not notarized by Apple (no paid developer
+account here), so macOS blocks it the first time. Open it once, then go to
+**System Settings → Privacy & Security** and click **Open Anyway**. Or, from a
+terminal:
 
 ```bash
 xattr -dr com.apple.quarantine /Applications/PicLib.app
