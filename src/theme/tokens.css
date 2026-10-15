@@ -1,0 +1,105 @@
+/*
+ * Jetons de design (« tokens ») : toutes les couleurs, tailles et espacements
+ * de l'interface sont définis ici, et nulle part ailleurs.
+ *
+ * Les gris autour des photos (`--color-photo-surround`) sont strictement
+ * neutres (rouge = vert = bleu) dans les deux thèmes, pour ne pas fausser la
+ * perception des couleurs des photos.
+ */
+
+:root {
+  --font-family-ui:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-size-small: 12px;
+  --font-size-body: 13px;
+  --font-size-large: 16px;
+  --font-size-title: 28px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius-control: 4px;
+  --radius-panel: 8px;
+
+  /* Étiquettes de couleur et marqueurs : identiques dans les deux thèmes. */
+  --color-label-red: #d9534f;
+  --color-label-yellow: #e2c33d;
+  --color-label-green: #5cae5c;
+  --color-label-blue: #4a8fd6;
+  --color-label-purple: #9a6bd4;
+  --color-flag-picked: #ffffff;
+  --color-flag-rejected: #d9534f;
+  --color-flag-rejected-text: #ffffff;
+
+  /* Mode Tri plein écran : noir neutre dans les deux thèmes, pour que seule
+     la photo attire l'œil. */
+  --color-cull-surround: #000000;
+}
+
+/* Thème sombre (par défaut). */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-background: #1e1e1e;
+  --color-photo-surround: #282828;
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #9a9a9a;
+  --color-text-error: #f08a7e;
+  --color-border: #3c3c3c;
+  --color-control-background: #3a3a3a;
+  --color-control-background-hover: #464646;
+  --color-control-text: #e0e0e0;
+  --color-focus-ring: #6fa8dc;
+  --color-accent: #3d6fa3;
+  --color-accent-hover: #4a7db2;
+  --color-accent-text: #ffffff;
+  --color-panel-background: #2b2b2b;
+  --color-overlay: rgb(0 0 0 / 55%);
+  --shadow-panel: 0 12px 40px rgb(0 0 0 / 50%);
+
+  /* Grille : gris neutres uniquement, comme autour des photos. */
+  --color-grid-cell: #333333;
+  --color-grid-cell-hover: #3b3b3b;
+  --color-grid-cell-selected: #4a4a4a;
+  --color-grid-cell-active: #666666;
+  --color-grid-placeholder: #2c2c2c;
+  --color-grid-badge-background: rgb(0 0 0 / 60%);
+  --color-grid-badge-text: #ffffff;
+  --color-rating: #e0e0e0;
+}
+
+/* Thème clair. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-background: #e8e8e8;
+  --color-photo-surround: #b4b4b4;
+  --color-text-primary: #1e1e1e;
+  --color-text-secondary: #5a5a5a;
+  --color-text-error: #b3261e;
+  --color-border: #c4c4c4;
+  --color-control-background: #d6d6d6;
+  --color-control-background-hover: #cacaca;
+  --color-control-text: #1e1e1e;
+  --color-focus-ring: #2f6fb0;
+  --color-accent: #2f6fb0;
+  --color-accent-hover: #3a7cbf;
+  --color-accent-text: #ffffff;
+  --color-panel-background: #f2f2f2;
+  --color-overlay: rgb(0 0 0 / 35%);
+  --shadow-panel: 0 12px 40px rgb(0 0 0 / 25%);
+
+  --color-grid-cell: #c2c2c2;
+  --color-grid-cell-hover: #cacaca;
+  --color-grid-cell-selected: #dadada;
+  --color-grid-cell-active: #f0f0f0;
+  --color-grid-placeholder: #bababa;
+  --color-grid-badge-background: rgb(0 0 0 / 60%);
+  --color-grid-badge-text: #ffffff;
+  --color-rating: #2b2b2b;
+}

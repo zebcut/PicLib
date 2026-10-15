@@ -1,0 +1,5 @@
+# Fichiers compilés (normalement redirigés hors du projet par CARGO_TARGET_DIR)
+/target/
+
+# Schémas générés par Tauri pour l'autocomplétion des permissions
+/gen/schemas

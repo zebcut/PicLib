@@ -1,0 +1,98 @@
+/* La section prend toute la hauteur restante de la colonne ; l'arbre y
+   défile. */
+.section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tree {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  flex: none;
+  padding-right: var(--space-1);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Disque : en tête de ses dossiers. */
+.disk {
+  font-weight: 600;
+}
+
+/* Dossier affiché dans la grille. */
+.active,
+.active:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+/* Dossier qui recevra celui qu'on glisse. */
+.dropTarget,
+.dropTarget:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.active .count,
+.dropTarget .count {
+  color: inherit;
+}
+
+/* Disque débranché, et ses dossiers : atténués. */
+.offline {
+  color: var(--color-text-secondary);
+}
+
+.badge {
+  flex: none;
+  font-size: var(--font-size-small);
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* « + » de l'en-tête du panneau Collections. */
+.add {
+  min-width: 20px;
+  padding: 0 var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+  color: var(--color-control-text);
+  font: inherit;
+  line-height: 1.3;
+}
+
+.add:hover {
+  background: var(--color-control-background-hover);
+}
+
+.message {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.message[role="alert"] {
+  color: var(--color-text-error);
+}

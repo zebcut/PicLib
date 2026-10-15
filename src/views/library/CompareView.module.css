@@ -1,0 +1,55 @@
+/* Les deux photos côte à côte, sur le gris neutre des photos. */
+.compare {
+  position: relative;
+  display: flex;
+  flex: 1;
+  gap: var(--space-2);
+  min-height: 0;
+  padding: var(--space-2);
+  background: var(--color-photo-surround);
+}
+
+.pane {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-control);
+}
+
+/* La photo qui reçoit les notes, marqueurs et couleurs. */
+.pane.focused {
+  border-color: var(--color-grid-cell-active);
+}
+
+.paneLabel {
+  margin: 0;
+  padding: var(--space-1) var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  text-align: center;
+}
+
+.paneStage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex: none;
+  gap: var(--space-2);
+}

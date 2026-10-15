@@ -1,0 +1,13 @@
+/* Couvre toute la fenêtre, elle-même en plein écran : l'interface est masquée. */
+.cull {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-cull-surround);
+}
+
+/* Pointeur masqué quand la souris ne bouge plus. */
+section.cull.idle,
+section.cull.idle * {
+  cursor: none;
+}

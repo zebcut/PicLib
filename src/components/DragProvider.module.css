@@ -1,0 +1,26 @@
+/* Étiquette qui suit le pointeur pendant un glisser. */
+.ghost {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  max-width: 240px;
+  margin: 12px 0 0 12px;
+  padding: var(--space-1) var(--space-2);
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-size: var(--font-size-small);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+}
+
+/* Pendant un glisser : pas de sélection de texte, curseur de déplacement. */
+.dragging,
+.dragging * {
+  cursor: grabbing !important;
+  user-select: none;
+}

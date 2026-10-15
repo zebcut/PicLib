@@ -1,0 +1,31 @@
+/* Règles de base communes à toute l'application. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  -webkit-font-smoothing: antialiased;
+  /* Une application de bureau ne sélectionne pas son texte comme une page web. */
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}

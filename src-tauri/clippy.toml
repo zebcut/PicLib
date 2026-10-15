@@ -1,0 +1,3 @@
+# Noms propres acceptés sans backticks dans la documentation (« .. » garde
+# la liste par défaut de Clippy).
+doc-valid-idents = ["WebView2", "PicLib", "OneDrive", "QuickTime", "ImageIO", "FFmpeg", "AVFoundation", "GeoNames", "DxO", "PhotoLab", ".."]

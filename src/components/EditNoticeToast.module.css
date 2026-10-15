@@ -1,0 +1,23 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-8);
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-panel);
+  background: var(--color-panel-background);
+  box-shadow: var(--shadow-panel);
+  color: var(--color-text-primary);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.error {
+  color: var(--color-text-error);
+}
+
+/* Mode Tri plein écran : seule information affichée, plus lisible de loin. */
+:global(:root[data-cull-mode]) .toast {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-large);
+}

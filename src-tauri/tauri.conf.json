@@ -1,0 +1,85 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "PicLib",
+  "version": "0.1.0",
+  "identifier": "com.piclib.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "PicLib",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "connect-src": "ipc: http://ipc.localhost",
+        "img-src": "'self' data: piclib: http://piclib.localhost",
+        "style-src": "'self' 'unsafe-inline'",
+        "object-src": "'none'",
+        "base-uri": "'none'",
+        "form-action": "'none'"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "copyright": "Copyright © 2026 The PicLib contributors",
+    "license": "GPL-3.0-or-later",
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "13.0"
+    },
+    "fileAssociations": [
+      {
+        "ext": [
+          "jpg",
+          "jpeg",
+          "png",
+          "heic",
+          "heif",
+          "tif",
+          "tiff",
+          "psd",
+          "psb",
+          "dng",
+          "nef",
+          "cr2",
+          "cr3",
+          "arw",
+          "raf"
+        ],
+        "contentTypes": [
+          "public.jpeg",
+          "public.png",
+          "public.heic",
+          "public.heif",
+          "public.tiff",
+          "com.adobe.photoshop-image",
+          "public.camera-raw-image",
+          "com.adobe.raw-image"
+        ],
+        "name": "Photo",
+        "description": "Photo",
+        "role": "Viewer",
+        "rank": "Alternate"
+      }
+    ]
+  }
+}

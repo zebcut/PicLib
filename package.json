@@ -1,0 +1,53 @@
+{
+  "name": "piclib",
+  "private": true,
+  "version": "0.1.0",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zebcut/PicLib.git"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --build && vite build",
+    "tauri": "tauri",
+    "app": "tauri dev",
+    "app:bundle": "tauri build --debug --bundles app",
+    "typecheck": "tsc --build",
+    "lint": "eslint --max-warnings 0 .",
+    "format": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
+    "format:check": "prettier --check . && cargo fmt --manifest-path src-tauri/Cargo.toml --check",
+    "clippy": "cargo clippy --manifest-path src-tauri/Cargo.toml -- -D warnings",
+    "places": "./scripts/build-places.sh",
+    "check": "npm run format:check && npm run typecheck && npm run lint && npm run clippy",
+    "dmg": "tauri build --bundles dmg"
+  },
+  "dependencies": {
+    "@tanstack/react-virtual": "^3.14.13",
+    "@tauri-apps/api": "^2.11.1",
+    "i18next": "^26.4.2",
+    "leaflet": "1.9.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-i18next": "^17.0.15"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tauri-apps/cli": "^2.11.5",
+    "@types/leaflet": "1.9.20",
+    "@types/node": "^24",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.9.9",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^8.3.0"
+  }
+}

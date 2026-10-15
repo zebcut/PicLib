@@ -1,0 +1,22 @@
+# Dépendances et fichiers générés du frontend
+node_modules
+dist
+*.tsbuildinfo
+
+# Journaux
+*.log
+npm-debug.log*
+
+# Éditeurs et système
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.sw?
+
+# Fichiers locaux (réglages personnels, jamais versionnés)
+*.local
+
+# Fichiers de test téléchargés ou générés (voir scripts/)
+tests/fixtures/raw/
+tests/fixtures/generated/

@@ -1,0 +1,6 @@
+dist
+package-lock.json
+src-tauri/target
+src-tauri/gen
+# Generated from Rust.
+src/services/bindings.ts

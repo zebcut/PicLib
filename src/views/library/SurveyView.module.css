@@ -1,0 +1,65 @@
+/* Toutes les photos à la fois, sur le gris neutre des photos. */
+.survey {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-photo-surround);
+}
+
+.grid {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 100%;
+}
+
+.cell {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-control);
+}
+
+/* La photo active : celle qui reçoit les notes, marqueurs et couleurs. */
+.cell.active {
+  border-color: var(--color-grid-cell-active);
+}
+
+/* Aperçu en cours de chargement : la vignette reste affichée. */
+.loading {
+  display: none;
+}
+
+/* Bouton « × » : visible au survol, ou quand il a le focus du clavier. */
+.remove {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-grid-badge-background);
+  color: var(--color-grid-badge-text);
+  font: inherit;
+  line-height: 22px;
+  opacity: 0;
+}
+
+.cell:hover .remove,
+.remove:focus-visible {
+  opacity: 1;
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: var(--color-text-secondary);
+}

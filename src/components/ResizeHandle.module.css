@@ -1,0 +1,54 @@
+/* Bord d'une colonne : une bande fine posée sur la bordure, plus large que
+   le trait pour être facile à attraper. */
+.vertical {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 7px;
+  margin: 0 -3px;
+  cursor: col-resize;
+}
+
+/* Bas d'une liste : une bande sous elle. */
+.horizontal {
+  height: 7px;
+  margin: 0 0 -3px;
+  cursor: row-resize;
+}
+
+.vertical:hover,
+.horizontal:hover,
+.vertical:focus-visible,
+.horizontal:focus-visible {
+  background: var(--color-focus-ring);
+  background-clip: content-box;
+}
+
+.vertical:hover,
+.vertical:focus-visible {
+  padding: 0 3px;
+}
+
+.horizontal:hover,
+.horizontal:focus-visible {
+  padding: 3px 0 2px;
+}
+
+.vertical:focus,
+.horizontal:focus {
+  outline: none;
+}
+
+/* Pendant un glisser (classe posée sur la page) : le curseur reste celui
+   du redimensionnement partout, et le texte n'est pas sélectionné. */
+.resizingColumns,
+.resizingColumns * {
+  cursor: col-resize !important;
+  user-select: none;
+}
+
+.resizingRows,
+.resizingRows * {
+  cursor: row-resize !important;
+  user-select: none;
+}

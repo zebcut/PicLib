@@ -1,0 +1,13 @@
+.text {
+  margin: 0;
+}
+
+.path {
+  margin: 0;
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+  /* Le chemin doit pouvoir être copié pour aller le vérifier. */
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}

@@ -1,0 +1,201 @@
+.scroller {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--color-photo-surround);
+  /* Les vignettes se choisissent, elles ne se sélectionnent pas comme du texte. */
+  user-select: none;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+}
+
+.row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+}
+
+.cell {
+  position: relative;
+  flex: none;
+  /* En bas, la place du marqueur, de la note et de la couleur. */
+  padding: var(--space-2) var(--space-2) var(--space-6);
+  border: 1px solid var(--color-photo-surround);
+  background: var(--color-grid-cell);
+}
+
+.cell[role="option"]:hover {
+  background: var(--color-grid-cell-hover);
+}
+
+.cell.selected,
+.cell.selected:hover {
+  background: var(--color-grid-cell-selected);
+}
+
+/* L'élément actif ressort parmi les éléments sélectionnés. */
+.cell.active,
+.cell.active:hover {
+  background: var(--color-grid-cell-active);
+}
+
+/* Case qui recevra le mot-clé glissé si on le lâche. */
+.cell.dropTarget {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+.frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  /* Donne sa taille aux unités cqw/cqh des images pivotées. */
+  container-type: size;
+}
+
+.image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Pivotée d'un quart de tour : ses côtés s'échangent une fois tournée. */
+.image.turned {
+  max-width: 100cqh;
+  max-height: 100cqw;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--color-grid-placeholder);
+}
+
+.failed {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  text-align: center;
+}
+
+.badge {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--color-grid-badge-background);
+  color: var(--color-grid-badge-text);
+  font-size: var(--font-size-small);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Marqueur, note, couleur : en bas à gauche, sur le cadre de la case. */
+.triage {
+  position: absolute;
+  left: var(--space-2);
+  bottom: var(--space-1);
+}
+
+/* Rond de la collection cible : au survol de la vignette, plein
+   si la photo y est. */
+.target {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: 1.5px solid var(--color-grid-badge-text);
+  border-radius: 50%;
+  background: var(--color-grid-badge-background);
+  opacity: 0;
+}
+
+.cell:hover .target,
+.target.inTarget {
+  opacity: 1;
+}
+
+.target.inTarget {
+  background: var(--color-grid-badge-text);
+}
+
+/* Indicateur de pile, en haut à gauche : le nombre de photos
+   d'une pile repliée, plus marqué, ou « 2/3 » dans une pile dépliée. */
+.stack {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  min-width: 18px;
+  padding: 0 var(--space-1);
+  border: 1px solid var(--color-grid-badge-text);
+  border-radius: var(--radius-control);
+  background: var(--color-grid-badge-background);
+  color: var(--color-grid-badge-text);
+  font: inherit;
+  font-size: var(--font-size-small);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.collapsedStack {
+  /* Deux bords décalés évoquent les photos empilées dessous. */
+  box-shadow:
+    2px 2px 0 -1px var(--color-grid-badge-background),
+    2px 2px 0 0 var(--color-grid-badge-text);
+}
+
+/* Fichier introuvable, en haut à droite ; le rond de la cible
+   passe dessous. */
+.missing {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  min-width: 16px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--color-flag-rejected);
+  color: var(--color-flag-rejected-text);
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* État du fichier XMP, en bas à droite ; au-dessus
+   de la durée d'une vidéo. */
+.xmp {
+  position: absolute;
+  right: var(--space-2);
+  bottom: var(--space-1);
+  min-width: 16px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--color-grid-badge-background);
+  color: var(--color-grid-badge-text);
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.xmp.xmpFailed {
+  background: var(--color-flag-rejected);
+  color: var(--color-flag-rejected-text);
+}
+
+.xmp.aboveDuration {
+  bottom: calc(var(--space-3) + 22px);
+}
+
+.target.belowMissing {
+  top: calc(var(--space-2) + 22px);
+}

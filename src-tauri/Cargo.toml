@@ -1,0 +1,132 @@
+[package]
+name = "piclib"
+version = "0.1.0"
+description = "PicLib — gestion de photothèque"
+authors = ["The PicLib contributors"]
+license = "GPL-3.0-or-later"
+repository = "https://github.com/zebcut/PicLib"
+edition = "2024"
+rust-version = "1.98"
+publish = false
+
+[lib]
+# Le suffixe `_lib` évite un conflit de nom entre la bibliothèque et
+# l'exécutable sous Windows (https://github.com/rust-lang/cargo/issues/8519).
+name = "piclib_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.6", features = [] }
+
+[dependencies]
+tauri = { version = "2.11", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# SQLite intégré à l'application (« bundled ») : même version sur macOS et
+# Windows, indépendante du système.
+rusqlite = { version = "0.40", features = ["array", "bundled"] }
+# Fenêtres système de sélection de dossier, ouvertes par le cœur (jamais par
+# l'interface). Module officiel Tauri ;
+tauri-plugin-dialog = "2.7"
+# Parcours d'arborescences (liens symboliques, boucles, erreurs d'accès).
+#
+walkdir = "2.5"
+# Lecture des métadonnées (EXIF des photos, RAW compris ; infos des vidéos).
+#
+nom-exif = "3.8"
+# Déjà utilisée par nom-exif pour ses dates : dépendance directe uniquement
+# pour convertir ces dates en dates jiff (aucun code supplémentaire compilé).
+chrono = { version = "0.4", default-features = false }
+# Lecture du XMP (fichiers annexes, XMP intégré aux photos). Déjà compilée
+# pour Tauri : aucun code supplémentaire.
+quick-xml = "0.42"
+# Dates et heures (date de prise de vue locale, fuseaux, décalages).
+jiff = "0.2"
+# Comparaison des noms de fichiers accentués (Unicode NFC).
+unicode-normalization = "0.1"
+# Empreinte SHA-256 des fichiers copiés à l'import (vérification de la
+# copie, doublons) : déjà compilée pour Tauri, aucun code supplémentaire.
+#
+sha2 = "0.10"
+thiserror = "2"
+tracing = "0.1"
+tracing-appender = "0.2.5"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+# Versions « release candidate » : épinglées exactement (`=`) pour qu'une
+# mise à jour ne casse jamais la génération des types sans qu'on le décide.
+#
+specta = { version = "=2.0.0-rc.25", features = ["derive"] }
+specta-typescript = "=0.0.12"
+tauri-specta = { version = "=2.0.0-rc.25", features = ["typescript"] }
+ureq = { version = "3", default-features = false, features = ["native-tls"] }
+# Avis du système quand un fichier apparaît ou change dans un dossier
+# (FSEvents sur macOS, ReadDirectoryChangesW sur Windows) : retour des
+# photos traitées par un éditeur externe, sans relire les dossiers en
+# permanence. Licence CC0.
+notify = "8.2"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# Appels directs au système (cache désactivé pour relire une copie depuis le
+# disque) : déjà compilée pour Tauri, maintenue par l'équipe de Rust.
+#
+libc = "0.2"
+# Lecture des attributs étendus : repère les dossiers synchronisés par iCloud.
+xattr = "1.6"
+# ImageIO de macOS (via objc2, déjà utilisé par Tauri) : décodage de tous les
+# formats photo (HEIC, RAW...) et fabrication des vignettes.
+#
+objc2-core-foundation = "0.3"
+objc2-core-graphics = "0.3"
+objc2-image-io = "0.3"
+# AVFoundation (moteur vidéo de macOS) : une image de chaque vidéo pour sa
+# vignette.
+objc2 = "0.6"
+block2 = "0.6"
+objc2-foundation = { version = "0.3", features = ["NSDictionary", "NSError", "NSFileManager", "NSString", "NSURL", "NSValue"] }
+objc2-core-media = { version = "0.3", features = ["CMTime"] }
+objc2-av-foundation = { version = "0.3", features = ["AVAsset", "AVAssetImageGenerator", "block2", "objc2-core-graphics", "objc2-core-media"] }
+# Core Image et Metal (déjà présents via Tauri et AVFoundation) : décodage des
+# RAW et réduction des images sur le GPU.
+objc2-core-image = "0.3"
+objc2-metal = "0.3"
+
+[lints.rust]
+# Interdit partout, sauf dans les fichiers de platform/macos/ qui appellent les
+# moteurs de macOS (ImageIO, AVFoundation, Core Image) : « deny » permet ces exceptions, déclarées et justifiées dans chacun.
+unsafe_code = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+dbg_macro = "deny"
+print_stdout = "warn"
+# Chaque bloc « unsafe » doit expliquer pourquoi il est sûr (« SAFETY: »).
+undocumented_unsafe_blocks = "deny"
+
+# Voir https://tauri.app/concept/size/#cargo-configuration
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+# « unwind » et non « abort » : une panique dans une tâche de fond (par
+# exemple un décodeur d'image sur un fichier abîmé) est rattrapée et marque la
+# tâche en échec, au lieu de fermer toute l'application.
+panic = "unwind"
+strip = true
+
+# Empreinte SHA-256 de l'import par copie : sans optimisation, elle tombe à
+# 12 Mo/s et chaque photo met plusieurs secondes à être copiée pendant le
+# développement (107 Mo/s optimisée, mesuré sur le disque externe). Ces
+# bibliothèques sont donc optimisées même en développement.
+[profile.dev.package.sha2]
+opt-level = 3
+
+[profile.dev.package.digest]
+opt-level = 3
+
+[profile.dev.package.block-buffer]
+opt-level = 3

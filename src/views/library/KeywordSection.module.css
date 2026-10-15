@@ -1,0 +1,96 @@
+/* Sections du panneau Mots-clés à neuf boutons : suggestions et jeu. */
+
+.section {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.label {
+  flex: none;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.hint {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+/* Trois rangées de trois, comme le pavé Option+1 à 9. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-1);
+}
+
+.slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 26px;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+  color: var(--color-control-text);
+  font: inherit;
+  font-size: var(--font-size-small);
+  text-align: left;
+  cursor: pointer;
+}
+
+.slot:hover:not(:disabled) {
+  background: var(--color-control-background-hover);
+}
+
+.slot:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Sur toutes les photos sélectionnées. */
+.on {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.slot.on:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+/* Sur une partie seulement. */
+.partial {
+  border-color: var(--color-accent);
+}
+
+.emptySlot {
+  justify-content: flex-end;
+  border-style: dashed;
+  background: none;
+}
+
+.slotName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.key {
+  flex: none;
+  margin-left: var(--space-1);
+  opacity: 0.6;
+  font-size: 10px;
+}

@@ -1,0 +1,62 @@
+.badges {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  line-height: 1;
+}
+
+.flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--color-grid-badge-background);
+  font-size: var(--font-size-small);
+}
+
+.picked {
+  color: var(--color-flag-picked);
+}
+
+/* Une photo rejetée doit se voir au premier coup d'œil. */
+.rejected {
+  background: var(--color-flag-rejected);
+  color: var(--color-flag-rejected-text);
+  font-weight: 700;
+}
+
+.stars {
+  color: var(--color-rating);
+  font-size: var(--font-size-small);
+  letter-spacing: 1px;
+}
+
+.color {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--color-grid-badge-background);
+  border-radius: 3px;
+}
+
+.red {
+  background: var(--color-label-red);
+}
+
+.yellow {
+  background: var(--color-label-yellow);
+}
+
+.green {
+  background: var(--color-label-green);
+}
+
+.blue {
+  background: var(--color-label-blue);
+}
+
+.purple {
+  background: var(--color-label-purple);
+}

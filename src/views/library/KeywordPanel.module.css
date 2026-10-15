@@ -1,0 +1,94 @@
+.mode {
+  width: 100%;
+  margin-bottom: var(--space-2);
+  font: inherit;
+  font-size: var(--font-size-small);
+}
+
+.tree {
+  max-height: 240px;
+  margin: 0 0 var(--space-2);
+  overflow-y: auto;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Mot-clé saisi : en gras, pour mieux le repérer. */
+.entered {
+  font-weight: 600;
+}
+
+/* Parent impliqué : présent sans avoir été saisi. */
+.implied {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Mode « Mots-clés » : un mot-clé par ligne, à plat. */
+.flatList {
+  max-height: 240px;
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.flatItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 22px;
+  padding-left: var(--space-1);
+  border-radius: var(--radius-control);
+  font-size: var(--font-size-small);
+}
+
+.flatItem:hover {
+  background: var(--color-control-background);
+}
+
+.partial {
+  color: var(--color-text-secondary);
+}
+
+/* × devant le nom ; même largeur que l'espace laissé à un parent impliqué. */
+.remove,
+.removeSpace {
+  flex: none;
+  width: 14px;
+}
+
+.remove {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.remove:hover {
+  color: var(--color-text-primary);
+}
+
+.error {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-error);
+  font-size: var(--font-size-small);
+}
+
+.message {
+  margin: 0 0 var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.message[role="alert"] {
+  color: var(--color-text-error);
+}

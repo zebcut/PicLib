@@ -1,0 +1,100 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+  color: var(--color-control-text);
+  font: inherit;
+  resize: vertical;
+}
+
+.input:focus {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -1px;
+}
+
+/* « < valeurs mixtes > » : discret, pour ne pas le confondre avec un texte. */
+.input::placeholder {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* « < valeurs mixtes > » d'une date : le champ date et heure n'affiche pas
+   de texte indicatif. */
+.mixed {
+  font-style: italic;
+}
+
+.note {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-3);
+  margin: var(--space-4) 0 0;
+  font-size: var(--font-size-small);
+}
+
+/* Chaque paire libellé / valeur occupe une ligne de la grille. */
+.row {
+  display: contents;
+}
+
+.info dt {
+  color: var(--color-text-secondary);
+}
+
+.info dd {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.message[role="alert"] {
+  color: var(--color-text-error);
+}
+
+/* « Version traitée de DSC_1234.NEF » : le nom ouvre l'original. */
+.editedFrom {
+  margin: var(--space-4) 0 0;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-accent);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}

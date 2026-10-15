@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Main window permissions, kept to the strict minimum. PicLib's own commands stay callable. Menus: creating items and installing the native menu bar (built by the UI so it can be translated); context menus opened under the pointer then released. Window: toggling and reading fullscreen, for the fullscreen Cull mode.",
+  "windows": ["main"],
+  "permissions": [
+    "core:menu:allow-new",
+    "core:menu:allow-set-as-app-menu",
+    "core:menu:allow-popup",
+    "core:resources:allow-close",
+    "core:window:allow-set-fullscreen",
+    "core:window:allow-is-fullscreen"
+  ]
+}

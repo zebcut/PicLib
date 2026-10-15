@@ -1,0 +1,183 @@
+.toolbar {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+  color: var(--color-control-text);
+  font: inherit;
+}
+
+.input:focus {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -1px;
+}
+
+.input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.iconButton {
+  flex: none;
+  width: 26px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+  color: var(--color-control-text);
+  font: inherit;
+  line-height: 1;
+}
+
+.iconButton:hover {
+  background: var(--color-control-background-hover);
+}
+
+/* Zone qui défile, dans les deux sens : sa hauteur maximale est réglée en
+   glissant son bord bas (style en ligne). */
+.tree {
+  overflow: auto;
+  border-radius: var(--radius-control);
+}
+
+/* Glisser-déposer : le fond de la liste reçoit un mot-clé (à la racine). */
+.rootTarget {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+/* Ligne qui recevra ce qu'on glisse. */
+.dropTarget,
+.dropTarget:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+/* Mot-clé en cours de glisser. */
+.dragged {
+  opacity: 0.5;
+}
+
+.checkbox {
+  flex: none;
+  margin: 0;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* « Inclure à l'export » décoché : mot-clé de rangement. */
+.hidden {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.count {
+  flex: none;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Flèche : visible au survol de la ligne, ou quand elle a le focus. */
+.show {
+  flex: none;
+  padding: 0 var(--space-1);
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+  line-height: 1;
+  visibility: hidden;
+}
+
+[role="treeitem"]:hover > .show:enabled,
+[role="treeitem"]:focus > .show:enabled {
+  visibility: visible;
+}
+
+.show:hover {
+  color: var(--color-text-primary);
+}
+
+.message {
+  margin: 0 0 var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.message[role="alert"],
+.error {
+  color: var(--color-text-error);
+}
+
+.error {
+  margin: var(--space-2) 0 0;
+  font-size: var(--font-size-small);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.hint {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.choices {
+  max-height: 240px;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  list-style: none;
+}
+
+.choice {
+  padding: var(--space-1) var(--space-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+}
+
+/* « À la racine » : un emplacement, pas un mot-clé. */
+.rootChoice {
+  font-style: italic;
+}
+
+.choice:hover {
+  background: var(--color-control-background);
+}
+
+.choice[aria-selected="true"] {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}

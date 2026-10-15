@@ -1,0 +1,62 @@
+/* Un groupe de règles, encadré ; un sous-groupe est décalé. */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-1);
+}
+
+.rule {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.rule select,
+.rule input[type="text"],
+.rule input[type="date"],
+.legend select {
+  font: inherit;
+}
+
+.keyword {
+  min-width: 200px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.adders {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.remove {
+  min-width: 22px;
+  margin-left: auto;
+  padding: 0 var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+  color: var(--color-control-text);
+  font: inherit;
+}
+
+.remove:hover {
+  background: var(--color-control-background-hover);
+}

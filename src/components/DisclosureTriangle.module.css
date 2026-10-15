@@ -1,0 +1,17 @@
+.triangle {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  fill: currentcolor;
+  transition: transform 0.12s ease-out;
+}
+
+.expanded {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .triangle {
+    transition: none;
+  }
+}

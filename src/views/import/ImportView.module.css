@@ -1,0 +1,352 @@
+/* Écran d'import : par-dessus la bibliothèque, toute la fenêtre. */
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+/* Panneaux latéraux --------------------------------------------------- */
+
+.sidePanel {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 15rem;
+  padding: var(--space-3) 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-panel-background);
+}
+
+.options {
+  width: 20rem;
+  padding: var(--space-3) var(--space-4);
+  border-right: none;
+  border-left: 1px solid var(--color-border);
+}
+
+.heading {
+  margin: 0;
+  padding: 0 var(--space-4);
+  font-size: var(--font-size-large);
+  font-weight: 600;
+}
+
+.options .heading {
+  padding: 0;
+}
+
+.panelTitle {
+  margin: var(--space-2) 0 0;
+  padding: 0 var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.source {
+  display: block;
+  width: 100%;
+  padding: var(--space-1) var(--space-4);
+  overflow: hidden;
+  border: none;
+  background: none;
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source:hover:enabled {
+  background: var(--color-control-background-hover);
+}
+
+.source:disabled {
+  color: var(--color-text-secondary);
+}
+
+.sourceRow {
+  display: flex;
+  align-items: center;
+}
+
+.sourceRow .source {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Retirer un dossier de la liste : visible au survol de sa ligne. */
+.forget {
+  flex: none;
+  padding: 0 var(--space-3);
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+  visibility: hidden;
+}
+
+.sourceRow:hover .forget,
+.forget:focus-visible {
+  visibility: visible;
+}
+
+.subfolders {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.source[aria-current="true"] {
+  background: var(--color-control-background);
+}
+
+.hint {
+  margin: 0;
+  padding: 0 var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.panelActions {
+  padding: var(--space-2) var(--space-4);
+}
+
+/* Centre ---------------------------------------------------------------- */
+
+.center {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.toolbar,
+.footer {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-panel-background);
+}
+
+.toolbar {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.footer {
+  border-top: 1px solid var(--color-border);
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--font-size-title);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  color: var(--color-text-secondary);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.notice {
+  padding: var(--space-2) var(--space-4);
+}
+
+.placeholder {
+  flex: 1;
+  margin: 0;
+  padding: var(--space-8);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* Grille ---------------------------------------------------------------- */
+
+.grid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--color-photo-surround);
+  user-select: none;
+}
+
+.gridContent {
+  position: relative;
+  width: 100%;
+}
+
+.gridRow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border: 1px solid var(--color-photo-surround);
+  background: var(--color-grid-cell);
+  font-size: var(--font-size-small);
+}
+
+.cell:hover {
+  background: var(--color-grid-cell-hover);
+}
+
+.cell.checked {
+  background: var(--color-grid-cell-selected);
+}
+
+/* Déjà au catalogue, ou doublon écarté : grisé. */
+.cell.unavailable {
+  opacity: 0.45;
+}
+
+.checkbox {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 1;
+  margin: 0;
+}
+
+.frame {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.thumbnail {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.badge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--color-grid-badge-background);
+  color: var(--color-grid-badge-text);
+  font-size: var(--font-size-small);
+}
+
+.name,
+.date {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date {
+  color: var(--color-text-secondary);
+}
+
+/* Rangement et aperçu de l'arborescence ------------------------------- */
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.subheading {
+  margin: 0;
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+.parts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  list-style: none;
+}
+
+.part {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+}
+
+.part input[type="text"] {
+  width: 6em;
+  font: inherit;
+}
+
+.adders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.tree {
+  max-height: 14rem;
+  margin: 0;
+  padding: var(--space-2);
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  list-style: none;
+  font-size: var(--font-size-small);
+  overflow-wrap: anywhere;
+}
+
+/* Dossier qui sera créé. */
+.newFolder {
+  font-weight: 600;
+}
+
+.newTag {
+  margin-left: var(--space-2);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-weight: normal;
+}

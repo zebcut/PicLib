@@ -1,0 +1,43 @@
+/* Le journal : une ligne par opération, ses fichiers dessous. */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-small);
+}
+
+.table th,
+.table td {
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.scroll {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.rowButton {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.items {
+  margin: 0;
+  padding: 0 0 0 var(--space-3);
+  list-style: none;
+  color: var(--color-text-secondary);
+  user-select: text;
+  -webkit-user-select: text;
+  word-break: break-all;
+}
+
+.problem {
+  color: var(--color-text-error);
+}

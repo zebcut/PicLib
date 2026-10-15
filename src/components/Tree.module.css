@@ -1,0 +1,42 @@
+.tree {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 22px;
+  border-radius: var(--radius-control);
+  font-size: var(--font-size-small);
+}
+
+.row:hover {
+  background: var(--color-control-background);
+}
+
+.row:focus {
+  outline: none;
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+/* Triangle de la branche ; vide (même largeur) pour un mot-clé sans enfant.
+   Sa zone de clic prend toute la hauteur de la ligne. */
+.twisty {
+  display: flex;
+  flex: none;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  color: var(--color-text-secondary);
+  cursor: default;
+  user-select: none;
+}

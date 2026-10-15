@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-large);
+}
+
+.contents {
+  margin: 0;
+}
+
+.importButton {
+  margin-top: var(--space-4);
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-control-background);
+  color: var(--color-control-text);
+  font: inherit;
+  font-size: var(--font-size-large);
+}
+
+.importButton:hover:enabled {
+  background: var(--color-control-background-hover);
+}
+
+.importButton:disabled {
+  opacity: 0.5;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+}
+
+.workspace,
+.version {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.workspace {
+  overflow-wrap: anywhere;
+  /* Le chemin doit pouvoir être copié pour ouvrir le dossier. */
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}
