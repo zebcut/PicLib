@@ -1075,7 +1075,8 @@
     "newSmartTitle": "Nouvelle collection dynamique",
     "editRules": "Modifier les règles…",
     "editRulesTitle": "Règles de « {{name}} »",
-    "rulesChanged": "Règles modifiées"
+    "rulesChanged": "Règles modifiées",
+    "refines": "Affine « {{name}} » : seules ses photos sont retenues."
   },
   "smart": {
     "combine": "Combinaison des règles",

@@ -1075,7 +1075,8 @@
     "newSmartTitle": "New smart collection",
     "editRules": "Edit rules…",
     "editRulesTitle": "Rules of “{{name}}”",
-    "rulesChanged": "Rules edited"
+    "rulesChanged": "Rules edited",
+    "refines": "Refines “{{name}}”: only its photos can match."
   },
   "smart": {
     "combine": "Rule combination",

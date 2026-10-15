@@ -45,3 +45,10 @@ npx license-checker --production --summary
 All product names mentioned (Adobe, Lightroom, Photoshop, DxO PhotoLab,
 Capture One, Affinity Photo, Luminar, darktable…) are trademarks of their
 respective owners and are only used to describe interoperability.
+
+## DNG
+
+This product includes DNG technology under license by Adobe.
+
+PicLib reads DNG files under Adobe's royalty-free
+[DNG patent license](https://helpx.adobe.com/camera-raw/desktop/dng-and-file-formats/digital-negative.html).

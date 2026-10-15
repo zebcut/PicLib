@@ -180,19 +180,67 @@ pub fn set_rules(
     Ok(())
 }
 
-/// Règles des collections dynamiques de la branche de `id` (elle comprise).
+/// Rule chains of the smart collections that make up the content of `id`
+/// (itself, or the collections of a set): one chain per smart collection
+/// whose parent is not smart, each chain listing the rules to combine with
+/// AND, from the topmost smart ancestor down. A nested smart collection
+/// refines its parent, so it is already covered by its topmost ancestor's
+/// chain, except for `id` itself, which brings its smart ancestors along.
 ///
 /// # Errors
 ///
-/// Échoue si la base est illisible.
-pub fn smart_rules_in_branch(
+/// Fails if the database is unreadable.
+pub fn smart_rule_chains(
     connection: &Connection,
     id: CollectionId,
+) -> Result<Vec<Vec<String>>, CatalogError> {
+    let nodes = branch(connection, id)?;
+    let smart: std::collections::HashSet<CollectionId> = nodes
+        .iter()
+        .filter(|node| node.is_smart())
+        .map(|node| node.id)
+        .collect();
+    let mut chains = Vec::new();
+    for node in &nodes {
+        let Some(rules) = &node.rules else {
+            continue;
+        };
+        if node.id == id {
+            let mut chain = smart_ancestor_rules(connection, node.parent_id)?;
+            chain.push(rules.clone());
+            chains.push(chain);
+        } else if node.parent_id.is_none_or(|parent| !smart.contains(&parent)) {
+            chains.push(vec![rules.clone()]);
+        }
+    }
+    Ok(chains)
+}
+
+/// Rules of the smart ancestors starting at `parent`, from the topmost one
+/// down to `parent`; empty when `parent` is not a smart collection.
+fn smart_ancestor_rules(
+    connection: &Connection,
+    mut parent: Option<CollectionId>,
 ) -> Result<Vec<String>, CatalogError> {
-    Ok(branch(connection, id)?
-        .into_iter()
-        .filter_map(|node| node.rules)
-        .collect())
+    let mut rules = Vec::new();
+    // At most as many steps as collections: protects against a loop.
+    let mut steps = 0_usize;
+    while let Some(id) = parent {
+        let Some(node) = get(connection, id)? else {
+            break;
+        };
+        let Some(node_rules) = node.rules else {
+            break;
+        };
+        rules.push(node_rules);
+        parent = node.parent_id;
+        steps += 1;
+        if steps > 10_000 {
+            break;
+        }
+    }
+    rules.reverse();
+    Ok(rules)
 }
 
 /// Supprime une collection ou un dossier sans enfant (ses photos quittent la

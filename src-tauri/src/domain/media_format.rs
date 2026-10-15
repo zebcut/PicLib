@@ -29,6 +29,8 @@ pub enum MediaFormat {
     /// RAW Fujifilm.
     Raf,
     /// RAW « universel » d'Adobe, aussi produit par certains téléphones.
+    ///
+    /// This product includes DNG technology under license by Adobe.
     Dng,
     /// Vidéo MP4.
     Mp4,

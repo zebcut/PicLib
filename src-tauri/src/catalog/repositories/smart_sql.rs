@@ -306,14 +306,23 @@ pub(super) fn source_condition(
     let LibrarySource::Collection(id) = source else {
         return Ok((static_source.to_owned(), Vec::new()));
     };
-    let rules = collections::smart_rules_in_branch(connection, id)?;
-    if rules.is_empty() {
+    let chains = collections::smart_rule_chains(connection, id)?;
+    if chains.is_empty() {
         return Ok((static_source.to_owned(), Vec::new()));
     }
     let mut sql = SmartSql::new(connection);
     let mut parts = vec![format!("({static_source})")];
-    for rule in rules.iter().filter_map(|rules| parse(rules)) {
-        parts.push(sql.condition(&rule)?);
+    for chain in &chains {
+        // A nested smart collection refines its smart ancestors: all their
+        // rules apply together.
+        let conditions = chain
+            .iter()
+            .filter_map(|rules| parse(rules))
+            .map(|rule| sql.condition(&rule))
+            .collect::<Result<Vec<_>, _>>()?;
+        if !conditions.is_empty() {
+            parts.push(format!("({})", conditions.join(" AND ")));
+        }
     }
     Ok((parts.join(" OR "), sql.params))
 }

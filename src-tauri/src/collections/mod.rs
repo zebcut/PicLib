@@ -29,11 +29,11 @@ pub enum CollectionError {
     /// La collection ou le dossier n'existe pas (ou plus).
     #[error("collection not found")]
     NotFound,
-    /// Seul un dossier de collections range des collections, et seule une
-    /// collection a des photos.
+    /// Only a collection set or a smart collection (for smart collections)
+    /// holds children, and only a manual collection holds photos.
     #[error("wrong kind of collection")]
     WrongKind,
-    /// Un dossier ne peut pas aller dans l'un de ses propres sous-dossiers.
+    /// A set or a smart collection cannot go inside its own branch.
     #[error("cannot move a folder into itself")]
     IntoItself,
     /// Le catalogue n'a pas pu être lu ou écrit.
@@ -104,7 +104,7 @@ pub fn create_smart(
 ) -> Result<(CollectionId, EditSummary), CollectionError> {
     let connection = catalog.connection();
     if let Some(parent) = parent {
-        folder(connection, parent)?;
+        smart_parent(connection, parent)?;
     }
     let name = free_name(connection, parent, name, None)?;
     let node = CollectionNode {
@@ -182,7 +182,11 @@ pub fn move_to(
     let connection = catalog.connection();
     let node = existing(connection, id)?;
     if let Some(parent) = parent {
-        folder(connection, parent)?;
+        if node.is_smart() {
+            smart_parent(connection, parent)?;
+        } else {
+            folder(connection, parent)?;
+        }
         if collections::branch(connection, id)?
             .iter()
             .any(|inside| inside.id == parent)
@@ -322,6 +326,21 @@ fn existing(
 fn folder(connection: &rusqlite::Connection, id: CollectionId) -> Result<(), CollectionError> {
     match existing(connection, id)?.kind {
         CollectionKind::Folder => Ok(()),
+        CollectionKind::Collection => Err(CollectionError::WrongKind),
+    }
+}
+
+/// A parent for a smart collection: a collection set, or another smart
+/// collection that it then refines (its rules apply on top of the parent's).
+/// Manual collections never hold children.
+fn smart_parent(
+    connection: &rusqlite::Connection,
+    id: CollectionId,
+) -> Result<(), CollectionError> {
+    let node = existing(connection, id)?;
+    match node.kind {
+        CollectionKind::Folder => Ok(()),
+        CollectionKind::Collection if node.is_smart() => Ok(()),
         CollectionKind::Collection => Err(CollectionError::WrongKind),
     }
 }

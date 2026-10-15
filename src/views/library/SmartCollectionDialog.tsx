@@ -39,12 +39,15 @@ export function SmartCollectionDialog({
   rules: initialRules,
   keywords,
   folders,
+  refines = null,
   onSubmit,
   onClose,
 }: {
   title: string;
   name: string | null;
   rules: SmartRule;
+  /** Name of the smart parent whose rules also apply, if any. */
+  refines?: string | null;
   keywords: readonly KeywordListItemDto[];
   folders: readonly FolderDto[];
   onSubmit: (
@@ -101,6 +104,11 @@ export function SmartCollectionDialog({
       }
     >
       <div className={listStyles.form}>
+        {refines !== null && (
+          <p className={listStyles.hint}>
+            {t("collections.refines", { name: refines })}
+          </p>
+        )}
         {asksName && (
           <label className={listStyles.field}>
             {t("collections.name")}

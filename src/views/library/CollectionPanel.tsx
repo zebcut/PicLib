@@ -143,8 +143,14 @@ export function CollectionPanel({
     if (target.kind === "collectionRoot") return moved.parentId !== null;
     if (target.kind !== "collection") return false;
     const destination = byId.get(target.collectionId);
+    if (destination === undefined) return false;
+    // A smart collection also goes under another smart one, which it then
+    // refines.
+    const accepts =
+      destination.kind === "folder" ||
+      (destination.rules !== null && moved.rules !== null);
     return (
-      destination?.kind === "folder" &&
+      accepts &&
       destination.id !== moved.parentId &&
       !isInside(destination.id, moved.id)
     );
@@ -168,6 +174,13 @@ export function CollectionPanel({
       }
     },
   });
+
+  /** Name of the smart parent `collection` refines, if any. */
+  const smartParentName = (collection: CollectionDto): string | null => {
+    const parent =
+      collection.parentId === null ? undefined : byId.get(collection.parentId);
+    return (parent?.rules ?? null) === null ? null : (parent?.name ?? null);
+  };
 
   const remove = (collection: CollectionDto) => {
     if (onChange === undefined) return;
@@ -216,6 +229,12 @@ export function CollectionPanel({
       ...(collection.rules === null
         ? []
         : [
+            {
+              text: t("collections.newSmartIn", { name: collection.name }),
+              action: () => {
+                setRequest({ kind: "createSmart", parent: collection });
+              },
+            },
             {
               text: t("collections.editRules"),
               action: () => {
@@ -451,6 +470,11 @@ export function CollectionPanel({
           rules={newSmartRules()}
           keywords={keywords}
           folders={folders}
+          refines={
+            (request.parent?.rules ?? null) === null
+              ? null
+              : (request.parent?.name ?? null)
+          }
           onSubmit={async (name, rules) => {
             const result = await onChange({
               kind: "createSmart",
@@ -477,6 +501,7 @@ export function CollectionPanel({
             rules={request.collection.rules}
             keywords={keywords}
             folders={folders}
+            refines={smartParentName(request.collection)}
             onSubmit={async (_name, rules) => {
               const result = await onChange({
                 kind: "setRules",

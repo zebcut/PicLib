@@ -27,7 +27,8 @@ still needs its Windows half).
 - **Keywords** — hierarchical keywords, keyword sets, suggestions,
   drag & drop, text import/export.
 - **Organize** — stacks (manual, RAW + JPEG pairs, bursts), manual and smart
-  collections, quick collection, a filter bar with presets.
+  collections (smart ones can be nested to drill down), quick collection, a
+  filter bar with presets.
 - **Map** — OpenStreetMap view, drag photos onto the map to geotag them,
   offline reverse geocoding (GeoNames), filter the grid by the visible area.
 - **Files** — move, rename, delete (to the Trash, always), relocate missing
