@@ -1,6 +1,6 @@
 [package]
 name = "piclib"
-version = "0.1.0"
+version = "0.1.1"
 description = "PicLib — gestion de photothèque"
 authors = ["The PicLib contributors"]
 license = "GPL-3.0-or-later"
