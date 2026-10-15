@@ -3903,7 +3903,12 @@ export type SmartTextField =
 /**  Légende. */
 "caption" | 
 /**  Pays, région, ville, lieu précis. */
-"place";
+"place" | 
+/**
+ *  Names of the applied keywords and of their parents, whether the
+ *  keyword exists yet or not ("France" matches "Places > France > Paris").
+ */
+"keywords";
 
 /**  Règle de comparaison d'une règle de texte. */
 export type SmartTextRule = 

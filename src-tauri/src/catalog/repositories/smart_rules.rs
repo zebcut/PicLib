@@ -98,6 +98,9 @@ pub enum SmartTextField {
     Caption,
     /// Pays, région, ville, lieu précis.
     Place,
+    /// Names of the applied keywords and of their parents, whether the
+    /// keyword exists yet or not ("France" matches "Places > France > Paris").
+    Keywords,
 }
 
 /// Règle d'une collection dynamique, ou groupe de règles.

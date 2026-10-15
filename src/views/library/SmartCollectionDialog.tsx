@@ -515,7 +515,7 @@ function RuleSettings({
           {select(
             t("smart.field"),
             rule.field,
-            ["fileName", "title", "caption", "place"] as const,
+            ["fileName", "title", "caption", "keywords", "place"] as const,
             (option) => t(`filters.text.fields.${option}`),
             (field) => {
               onChange({ ...rule, field });

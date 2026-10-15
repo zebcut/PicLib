@@ -202,6 +202,7 @@ impl<'c> SmartSql<'c> {
                 SmartTextField::Title => TextField::Title,
                 SmartTextField::Caption => TextField::Caption,
                 SmartTextField::Place => TextField::Place,
+                SmartTextField::Keywords => TextField::Keywords,
             },
             rule: text_rule(rule),
             text: text.to_owned(),
