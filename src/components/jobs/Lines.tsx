@@ -53,5 +53,9 @@ export function jobFailureMessage(t: TFunction, failure: JobFailure): string {
       return t("importResult.destinationUnavailable", { path: failure.path });
     case "catalogError":
       return t("importResult.catalogError");
+    case "catalogDamaged":
+      return t("catalogMaintenance.damaged");
+    case "backupFailed":
+      return t("catalogMaintenance.backupFailed");
   }
 }

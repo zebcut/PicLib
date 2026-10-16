@@ -1,7 +1,7 @@
 import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 
-import { formatCount } from "../../i18n/format";
+import { formatCount, formatPercent, progressCounts } from "../../i18n/format";
 import { cancelJob } from "../../services/jobs";
 import type { JobKind, JobUpdate } from "../../services/jobs";
 import { lastPathSegment } from "../../utils/path";
@@ -11,8 +11,19 @@ import styles from "./JobIndicator.module.css";
 /**
  * Indicateur discret des tâches de fond en cours, avec leur progression et un
  * bouton pour les annuler. N'affiche rien quand aucune tâche ne tourne.
+ *
+ * A job that knows its total also shows a progress bar, its percentage and,
+ * once it can be estimated, the time left.
+ *
+ * @param remaining estimated milliseconds left, by job id.
  */
-export function JobIndicator({ jobs }: { jobs: JobUpdate[] }) {
+export function JobIndicator({
+  jobs,
+  remaining = new Map(),
+}: {
+  jobs: JobUpdate[];
+  remaining?: ReadonlyMap<number, number>;
+}) {
   const { t } = useTranslation();
 
   const running = jobs.flatMap((job) =>
@@ -35,7 +46,18 @@ export function JobIndicator({ jobs }: { jobs: JobUpdate[] }) {
             <span className={styles.title}>{jobTitle(t, job.kind)}</span>
             <span className={styles.progress}>
               {progressText(t, job.kind, job.progress, job.total)}
+              {job.total !== null &&
+                job.total > 0 &&
+                ` · ${formatPercent(job.progress / job.total)}`}
             </span>
+            {job.total !== null && job.total > 0 && (
+              <ProgressBar progress={job.progress} total={job.total} />
+            )}
+            {remaining.has(job.id) && (
+              <span className={styles.progress}>
+                {remainingText(t, remaining.get(job.id) ?? 0)}
+              </span>
+            )}
           </div>
           <Button
             title={t("jobs.cancelTooltip")}
@@ -92,6 +114,10 @@ function jobTitle(t: TFunction, kind: JobKind): string {
       return t("jobs.xmpWrite");
     case "editedVersions":
       return t("jobs.editedVersions");
+    case "catalogCheck":
+      return t("jobs.catalogCheck");
+    case "catalogCleanup":
+      return t("jobs.catalogCleanup");
   }
 }
 
@@ -101,12 +127,20 @@ function progressText(
   progress: number,
   total: number | null,
 ): string {
-  const done = formatCount(progress);
-  if (kind.kind === "folderAnalysis" || total === null) {
-    return t("jobs.filesFound", { count: progress, formatted: done });
+  const isMaintenance =
+    kind.kind === "catalogCheck" || kind.kind === "catalogCleanup";
+  // Integrity check, backup, rebuild: no count to show.
+  if (isMaintenance && total === null) return t("jobs.working");
+  if (total === null) {
+    return t("jobs.filesFound", {
+      count: progress,
+      formatted: formatCount(progress),
+    });
   }
-  const counts = { count: progress, done, total: formatCount(total) };
+  const counts = progressCounts(progress, total);
   switch (kind.kind) {
+    case "folderAnalysis":
+      return t("importScreen.readingDates", counts);
     case "import":
       return t("jobs.filesProcessed", counts);
     case "trash":
@@ -123,5 +157,37 @@ function progressText(
       return t("jobs.xmpWriteProcessed", counts);
     case "editedVersions":
       return t("jobs.filesProcessed", counts);
+    case "catalogCheck":
+    case "catalogCleanup":
+      return t("jobs.cacheImagesProcessed", counts);
   }
+}
+
+function ProgressBar({ progress, total }: { progress: number; total: number }) {
+  const ratio = Math.min(1, Math.max(0, progress / total));
+  return (
+    <div
+      className={styles.bar}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={total}
+      aria-valuenow={Math.min(progress, total)}
+    >
+      <div
+        className={styles.fill}
+        style={{ width: `${String(ratio * 100)}%` }}
+      />
+    </div>
+  );
+}
+
+/** "About 12 min left", rounded up to the minute. */
+function remainingText(t: TFunction, milliseconds: number): string {
+  const minutes = Math.ceil(milliseconds / 60_000);
+  if (milliseconds < 60_000) return t("jobs.remainingUnderMinute");
+  if (minutes < 60) return t("jobs.remainingMinutes", { minutes });
+  return t("jobs.remainingHours", {
+    hours: Math.floor(minutes / 60),
+    minutes: String(minutes % 60).padStart(2, "0"),
+  });
 }

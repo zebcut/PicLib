@@ -40,6 +40,7 @@ pub mod keyword_list;
 pub mod keyword_sets;
 pub mod keyword_transfer;
 pub mod keywords;
+pub mod maintenance;
 pub mod map;
 pub mod media_move;
 pub mod metadata;
@@ -116,6 +117,8 @@ pub fn specta_builder() -> Builder<tauri::Wry> {
         collections::get_quick_collection,
         collections::set_collection_target,
         missing::check_missing_files,
+        maintenance::check_catalog,
+        maintenance::clean_catalog,
         operations_log::get_operations,
         operations_log::get_operation_items,
         relocation::choose_relocated_file,

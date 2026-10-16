@@ -68,6 +68,12 @@ impl PreviewCache {
         }
     }
 
+    /// Folder of the cache.
+    #[must_use]
+    pub fn root(&self) -> &Path {
+        &self.root
+    }
+
     /// Emplacement de l'aperçu d'un média : `Aperçus/000/000123.jpg`.
     #[must_use]
     pub fn path_for(&self, media_id: MediaId) -> PathBuf {

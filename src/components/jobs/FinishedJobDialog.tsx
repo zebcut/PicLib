@@ -1,5 +1,10 @@
 import type { JobUpdate } from "../../services/jobs";
+import { cleanCatalog } from "../../services/maintenance";
 import { lastPathSegment } from "../../utils/path";
+import {
+  CatalogCheckResult,
+  CatalogCleanupResult,
+} from "./CatalogMaintenanceResult";
 import { FileMetadataResult } from "./FileMetadataResult";
 import { ImportResult } from "./ImportResult";
 import { TrashResult } from "./TrashResult";
@@ -76,5 +81,20 @@ export function FinishedJobDialog({
           }}
         />
       );
+    case "catalogCheck":
+      return (
+        <CatalogCheckResult
+          status={status}
+          onClean={() => {
+            cleanCatalog().catch((error: unknown) => {
+              console.error("Failed to clean up the catalog", error);
+            });
+            close();
+          }}
+          onClose={close}
+        />
+      );
+    case "catalogCleanup":
+      return <CatalogCleanupResult status={status} onClose={close} />;
   }
 }

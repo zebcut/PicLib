@@ -58,6 +58,9 @@ pub struct SourceFile {
 /// de vue (les fichiers d'un groupe côte à côte). `on_progress` reçoit le
 /// nombre de fichiers lus et le total.
 ///
+/// Progress is reported after every file (the job manager throttles the
+/// reports).
+///
 /// # Errors
 ///
 /// `Ok(None)` si l'utilisateur annule ; une erreur si le catalogue est
@@ -92,6 +95,9 @@ pub fn read_source(
             };
             let (capture_time, camera) = capture_time(file, &sidecars, time_zone);
             read.push((file, capture_time, camera, group));
+            // Per file, not per batch: opening a file can be slow (a sync
+            // client checking each one), and a batch then takes minutes.
+            on_progress((files.len() + read.len()) as u64, total);
         }
         let catalog = lock(catalog);
         let connection = catalog.connection();

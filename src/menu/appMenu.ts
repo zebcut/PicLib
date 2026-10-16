@@ -113,6 +113,14 @@ async function buildAppMenu(
         text: t("menu.newCatalog"),
         action: actions.createCatalog,
       },
+      {
+        id: "catalog.cleanUp",
+        text: t("menu.cleanUpCatalog"),
+        enabled: actions.photo.enabled,
+        action: () => {
+          actions.trigger("catalog.cleanUp");
+        },
+      },
       separator,
       {
         id: "import-photos",

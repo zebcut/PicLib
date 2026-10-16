@@ -50,6 +50,24 @@ pub fn create_automatic_backup(
     )
 }
 
+impl super::Catalog {
+    /// Verified backup made before a cleanup
+    /// (`Catalogue-cleanup-20250101-120000.sqlite`). Like the backups made
+    /// before a migration, it is never pruned automatically.
+    ///
+    /// # Errors
+    ///
+    /// Voir [`create_verified_copy`].
+    pub fn back_up_before_cleanup(&self, backups_dir: &Path) -> Result<PathBuf, BackupError> {
+        create_verified_copy(
+            self.connection(),
+            backups_dir,
+            "Catalogue-cleanup",
+            self.schema_version(),
+        )
+    }
+}
+
 /// Copie le catalogue dans `backups_dir` sous le nom `<prefix>-<heure
 /// locale>.sqlite`, puis vérifie la copie. Un fichier existant n'est jamais
 /// écrasé : un suffixe `-2`, `-3`... est ajouté si besoin.

@@ -18,7 +18,9 @@ mod generator;
 mod import_preview;
 mod preview;
 
-pub use cache::{CacheError, JPEG_QUALITY, THUMBNAIL_SIZE, ThumbnailCache};
+pub use cache::{
+    CacheError, CachedImage, JPEG_QUALITY, THUMBNAIL_SIZE, ThumbnailCache, cached_images,
+};
 pub use generator::{GenerationError, GenerationReport, generate_pending};
 pub use import_preview::{IMPORT_THUMBNAIL_SIZE, ImportPreviewCache};
 pub use preview::{PREVIEW_JPEG_QUALITY, PREVIEW_SIZE, PreviewCache};

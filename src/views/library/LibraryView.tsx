@@ -9,6 +9,7 @@ import type { GridQuery, GridSource } from "../../services/library";
 import type { MapArea } from "../../services/map";
 import { counted } from "../../i18n/format";
 import { checkMissingFiles } from "../../services/library";
+import { checkCatalog } from "../../services/maintenance";
 import { chooseRelocatedFolder } from "../../services/relocation";
 import { checkFolderSidecars } from "../../services/xmp";
 import { useShortcuts } from "../../shortcuts/ShortcutProvider";
@@ -137,6 +138,11 @@ export function LibraryView({
     "library.findMissing": () => {
       checkMissingFiles().catch((error: unknown) => {
         console.error("Failed to look for the missing files", error);
+      });
+    },
+    "catalog.cleanUp": () => {
+      checkCatalog().catch((error: unknown) => {
+        console.error("Failed to check the catalog", error);
       });
     },
     "collection.clearQuick": () => {

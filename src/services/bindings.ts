@@ -398,6 +398,16 @@ export const commands = {
 	/**  Cherche de nouveau les fichiers de tout le catalogue. */
 	checkMissingFiles: () => __TAURI_INVOKE<void>("check_missing_files"),
 	/**
+	 *  Starts the check of the catalog; its summary arrives through the jobs
+	 *  subscription. Nothing is changed.
+	 */
+	checkCatalog: () => __TAURI_INVOKE<void>("check_catalog"),
+	/**
+	 *  Starts the cleanup of the catalog, once the user confirmed the summary
+	 *  of a check.
+	 */
+	cleanCatalog: () => __TAURI_INVOKE<void>("clean_catalog"),
+	/**
 	 *  Les dernières opérations, la plus récente d'abord.
 	 * 
 	 *  # Errors
@@ -1344,6 +1354,43 @@ export type CatalogBackupView = {
 	 *  a une.
 	 */
 	latest: string | null,
+};
+
+/**
+ *  What a cleanup would do, for the confirmation dialog (counters typed
+ *  `u32` for TypeScript, sent with their exact value; sizes in bytes).
+ */
+export type CatalogCheckSummary = {
+	/**  Integrity problems (at most ten); empty when the catalog is sound. */
+	problems: string[],
+	/**  Thumbnails of media no longer in the catalog. */
+	orphanThumbnails: number,
+	/**  Previews of media no longer in the catalog. */
+	orphanPreviews: number,
+	/**  Their size. */
+	orphanBytes: number,
+	/**  Stacks left with fewer than two photos. */
+	loneStacks: number,
+	/**  Size of the catalog. */
+	catalogBytes: number,
+	/**  Unused space in the catalog. */
+	reclaimableBytes: number,
+};
+
+/**  What a cleanup did. */
+export type CatalogCleanupSummary = {
+	/**  File name of the backup made first (in the backups folder). */
+	backupName: string,
+	/**  Thumbnails and previews removed. */
+	removedImages: number,
+	/**  Their size. */
+	removedBytes: number,
+	/**  Stacks removed. */
+	removedStacks: number,
+	/**  Size of the catalog before. */
+	catalogBytesBefore: number,
+	/**  Size of the catalog after. */
+	catalogBytesAfter: number,
 };
 
 /**  Contenu du catalogue en quelques chiffres. */
@@ -2903,7 +2950,11 @@ path: string } |
 /**  Dossier concerné. */
 path: string } | 
 /**  Le catalogue n'a pas pu être lu ou écrit. */
-{ kind: "catalogError" };
+{ kind: "catalogError" } | 
+/**  The catalog failed its integrity check: it was not cleaned up. */
+{ kind: "catalogDamaged" } | 
+/**  The backup made before a cleanup failed: nothing was changed. */
+{ kind: "backupFailed" };
 
 /**  Nature d'une tâche et ses paramètres, pour l'affichage. */
 export type JobKind = 
@@ -2945,7 +2996,11 @@ automatic: boolean } |
 /**  Ajout des photos traitées par un éditeur externe. */
 { kind: "editedVersions"; 
 /**  Fichiers reconnus. */
-count: number };
+count: number } | 
+/**  Check of the catalog before a cleanup. */
+{ kind: "catalogCheck" } | 
+/**  Cleanup and optimization of the catalog. */
+{ kind: "catalogCleanup" };
 
 /**  Résultat d'une tâche terminée avec succès. */
 export type JobResult = 
@@ -2984,7 +3039,15 @@ summary: XmpWriteSummary } |
 /**  Photos traitées ajoutées au catalogue. */
 { kind: "editedVersions"; 
 /**  Chiffres clés. */
-summary: EditedVersionsSummary };
+summary: EditedVersionsSummary } | 
+/**  What a cleanup would do. */
+{ kind: "catalogCheck"; 
+/**  Chiffres clés. */
+summary: CatalogCheckSummary } | 
+/**  What a cleanup did. */
+{ kind: "catalogCleanup"; 
+/**  Chiffres clés. */
+summary: CatalogCleanupSummary };
 
 /**  Mise à jour d'une tâche, envoyée à l'interface. */
 export type JobUpdate = {

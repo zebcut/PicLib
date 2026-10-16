@@ -113,7 +113,8 @@
     "editIn": "Modifier dans {{editor}}",
     "editInNoEditor": "Modifier dans un éditeur externe",
     "editInSubmenu": "Modifier dans",
-    "revealInFinder": "Afficher dans le Finder"
+    "revealInFinder": "Afficher dans le Finder",
+    "cleanUpCatalog": "Nettoyer et optimiser le catalogue…"
   },
   "catalogSwitch": {
     "openDialogTitle": "Choisissez le dossier du catalogue PicLib à ouvrir",
@@ -172,7 +173,15 @@
     "xmpWrite": "Enregistrement des métadonnées dans les fichiers",
     "xmpWriteProcessed_one": "{{done}} photo sur {{total}}",
     "xmpWriteProcessed_other": "{{done}} photos sur {{total}}",
-    "editedVersions": "Ajout des photos traitées"
+    "editedVersions": "Ajout des photos traitées",
+    "remainingUnderMinute": "Encore moins d'une minute",
+    "remainingMinutes": "Encore environ {{minutes}} min",
+    "remainingHours": "Encore environ {{hours}} h {{minutes}}",
+    "catalogCheck": "Vérification du catalogue",
+    "catalogCleanup": "Nettoyage du catalogue",
+    "working": "En cours…",
+    "cacheImagesProcessed_one": "{{done}} image du cache sur {{total}}",
+    "cacheImagesProcessed_other": "{{done}} images du cache sur {{total}}"
   },
   "folderAnalysis": {
     "dialogTitle": "Choisissez le dossier de photos à importer",
@@ -1377,5 +1386,29 @@
     "trashCopy": "« {{name}} » est restée identique à son original : elle va dans la corbeille et quitte le catalogue. L'original n'est pas touché.",
     "trashCopyConfirm": "Mettre à la corbeille",
     "trashCopyChanged": "Cette copie a été modifiée entre-temps : elle n'a pas été mise à la corbeille."
+  },
+  "catalogMaintenance": {
+    "title": "Nettoyer et optimiser le catalogue",
+    "sound": "Le catalogue est en bon état ({{size}}).",
+    "orphans_one": "{{formatted}} vignette ou aperçu d'une photo qui n'est plus au catalogue ({{size}})",
+    "orphans_other": "{{formatted}} vignettes et aperçus de photos qui ne sont plus au catalogue ({{size}})",
+    "loneStacks_one": "{{formatted}} pile de moins de deux photos",
+    "loneStacks_other": "{{formatted}} piles de moins de deux photos",
+    "reclaimable": "{{size}} d'espace inutilisé dans le catalogue",
+    "nothing": "Rien à nettoyer. Le catalogue peut tout de même être reconstruit pour rester rapide.",
+    "explanation": "Une sauvegarde vérifiée du catalogue est faite d'abord. Seules des copies réduites fabriquées par PicLib sont effacées : vos photos et leurs fichiers XMP ne sont jamais touchés. PicLib peut ralentir pendant la reconstruction du catalogue.",
+    "clean": "Nettoyer et optimiser",
+    "damagedTitle": "Catalogue abîmé",
+    "damaged": "Le catalogue n'a pas passé sa vérification d'intégrité : il n'a pas été modifié. Fermez PicLib et restaurez sa dernière sauvegarde, rangée dans le dossier du catalogue.",
+    "backupFailed": "La sauvegarde du catalogue n'a pas pu être faite ou vérifiée (disque plein ?) : rien n'a été modifié.",
+    "failedTitle": "Nettoyage impossible",
+    "crashed": "Une erreur interne a interrompu le nettoyage. Les détails se trouvent dans le journal de PicLib.",
+    "doneTitle": "Catalogue nettoyé et optimisé",
+    "removedImages_one": "{{formatted}} vignette ou aperçu effacé ({{size}})",
+    "removedImages_other": "{{formatted}} vignettes et aperçus effacés ({{size}})",
+    "removedStacks_one": "{{formatted}} pile retirée",
+    "removedStacks_other": "{{formatted}} piles retirées",
+    "catalogSize": "Taille du catalogue : {{before}} avant, {{after}} après",
+    "backup": "Sauvegarde faite avant le nettoyage : « {{name}} », dans le dossier des sauvegardes du catalogue."
   }
 }

@@ -113,7 +113,8 @@
     "editIn": "Edit in {{editor}}",
     "editInNoEditor": "Edit in External Editor",
     "editInSubmenu": "Edit In",
-    "revealInFinder": "Show in Finder"
+    "revealInFinder": "Show in Finder",
+    "cleanUpCatalog": "Clean Up and Optimize Catalog…"
   },
   "catalogSwitch": {
     "openDialogTitle": "Choose the folder of the PicLib catalog to open",
@@ -172,7 +173,15 @@
     "xmpWrite": "Saving metadata to files",
     "xmpWriteProcessed_one": "{{done}} photo of {{total}}",
     "xmpWriteProcessed_other": "{{done}} photos of {{total}}",
-    "editedVersions": "Adding edited photos"
+    "editedVersions": "Adding edited photos",
+    "remainingUnderMinute": "Less than a minute left",
+    "remainingMinutes": "About {{minutes}} min left",
+    "remainingHours": "About {{hours}} h {{minutes}} min left",
+    "catalogCheck": "Checking the catalog",
+    "catalogCleanup": "Cleaning up the catalog",
+    "working": "Working…",
+    "cacheImagesProcessed_one": "{{done}} cached image of {{total}}",
+    "cacheImagesProcessed_other": "{{done}} cached images of {{total}}"
   },
   "folderAnalysis": {
     "dialogTitle": "Choose the folder of photos to import",
@@ -1377,5 +1386,29 @@
     "trashCopy": "“{{name}}” is still identical to its original: it goes to the Trash and leaves the catalog. The original is not touched.",
     "trashCopyConfirm": "Move to Trash",
     "trashCopyChanged": "This copy has been modified in the meantime: it was not moved to the Trash."
+  },
+  "catalogMaintenance": {
+    "title": "Clean Up and Optimize Catalog",
+    "sound": "The catalog is in good shape ({{size}}).",
+    "orphans_one": "{{formatted}} thumbnail or preview of a photo no longer in the catalog ({{size}})",
+    "orphans_other": "{{formatted}} thumbnails and previews of photos no longer in the catalog ({{size}})",
+    "loneStacks_one": "{{formatted}} stack with fewer than two photos",
+    "loneStacks_other": "{{formatted}} stacks with fewer than two photos",
+    "reclaimable": "{{size}} of unused space in the catalog",
+    "nothing": "Nothing to clean up. The catalog can still be rebuilt to stay fast.",
+    "explanation": "A verified backup of the catalog is made first. Only reduced copies made by PicLib are removed: your photos and their XMP files are never touched. PicLib may slow down while the catalog is rebuilt.",
+    "clean": "Clean Up and Optimize",
+    "damagedTitle": "Damaged catalog",
+    "damaged": "The catalog failed its integrity check and was left untouched. Quit PicLib and restore its latest backup, kept in the catalog folder.",
+    "backupFailed": "The catalog backup could not be made or verified (disk full?): nothing was changed.",
+    "failedTitle": "Cleanup failed",
+    "crashed": "An internal error stopped the cleanup. Details are in the PicLib log.",
+    "doneTitle": "Catalog cleaned up and optimized",
+    "removedImages_one": "{{formatted}} thumbnail or preview removed ({{size}})",
+    "removedImages_other": "{{formatted}} thumbnails and previews removed ({{size}})",
+    "removedStacks_one": "{{formatted}} stack removed",
+    "removedStacks_other": "{{formatted}} stacks removed",
+    "catalogSize": "Catalog size: {{before}} before, {{after}} after",
+    "backup": "Backup made before the cleanup: \"{{name}}\", in the catalog's backups folder."
   }
 }

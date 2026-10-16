@@ -8,7 +8,7 @@ use nom_exif::{Exif, ExifTag, IfdIndex, IfdKind, MediaParser, MediaSource};
 
 use super::embedded::{JpegExif, jpeg_exif};
 use super::recovered::field_value;
-use super::values::{capture_time, decimal, gps_position, text, unsigned};
+use super::values::{capture_time, decimal, gps_position, pixel_size, text, unsigned};
 use super::{ExtractedMetadata, MetadataError, RecoveredMetadata};
 use crate::domain::{MediaDetails, MediaFormat, MetadataField, Orientation};
 use crate::platform;
@@ -191,7 +191,7 @@ fn descriptive_fields(exif: &Exif) -> Vec<(MetadataField, String)> {
 /// fie que pour les autres formats. Des dimensions absentes valent mieux que
 /// des dimensions fausses ; elles seront complétées au décodage de l'image.
 fn dimensions(exif: &Exif, format: MediaFormat) -> (Option<u32>, Option<u32>) {
-    let pixel = |tag| unsigned(exif.get(tag)).and_then(|value| u32::try_from(value).ok());
+    let pixel = |tag| pixel_size(exif.get(tag));
     let exif_dimensions = (
         pixel(ExifTag::ExifImageWidth),
         pixel(ExifTag::ExifImageHeight),

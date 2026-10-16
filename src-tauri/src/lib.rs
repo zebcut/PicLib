@@ -21,6 +21,7 @@ pub mod jobs;
 pub mod keywords;
 mod lifecycle;
 mod logging;
+pub mod maintenance;
 pub mod map_tiles;
 pub mod media_files;
 pub mod metadata;
@@ -174,6 +175,18 @@ pub fn run() -> tauri::Result<()> {
     Ok(())
 }
 
+/// Window title "PicLib - <catalog>". Switching catalogs restarts the
+/// application, so the title is set once.
+fn show_catalog_name(app: &App, workspace: &workspace::Workspace) {
+    let Some(window) = app.get_webview_window("main") else {
+        tracing::warn!("no main window to show the catalog name in");
+        return;
+    };
+    if let Err(error) = window.set_title(&format!("PicLib - {}", workspace.name())) {
+        tracing::warn!(%error, "cannot show the catalog name in the window title");
+    }
+}
+
 /// Ouvre le catalogue et enregistre l'état du démarrage pour l'interface,
 /// ainsi que le cache des aperçus du dossier de travail.
 ///
@@ -192,6 +205,7 @@ fn open_catalog(app: &App, preview_cache_limit: u64) {
             let import_previews = ImportPreviewCache::new(opened.workspace.import_previews_dir());
             import_previews.clear();
             app.manage(import_previews);
+            show_catalog_name(app, &opened.workspace);
             app.manage(opened.workspace);
             // Une seule connexion, protégée par un verrou : les commandes y
             // accèdent chacune à son tour.

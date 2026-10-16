@@ -54,6 +54,12 @@ impl ThumbnailCache {
         Self { root }
     }
 
+    /// Folder of the cache.
+    #[must_use]
+    pub fn root(&self) -> &Path {
+        &self.root
+    }
+
     /// Emplacement de la vignette d'un média :
     /// `Vignettes/000/000123.jpg`, mille vignettes par sous-dossier.
     #[must_use]
@@ -97,6 +103,49 @@ impl ThumbnailCache {
             &self.path_for(pending.media_id),
         )
     }
+}
+
+/// Image found in a cache folder (thumbnails or previews).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CachedImage {
+    /// Media it was made for.
+    pub media_id: MediaId,
+    /// Size in bytes.
+    pub size: u64,
+}
+
+/// Images of a cache laid out by [`sharded_path`] (`<root>/000/000123.jpg`).
+/// Any other file (a temporary file left by a crash, a stray file) is
+/// ignored. A missing or unreadable folder gives an empty list.
+#[must_use]
+pub fn cached_images(root: &Path) -> Vec<CachedImage> {
+    let Ok(folders) = std::fs::read_dir(root) else {
+        return Vec::new();
+    };
+    folders
+        .filter_map(Result::ok)
+        .filter_map(|folder| std::fs::read_dir(folder.path()).ok())
+        .flatten()
+        .filter_map(Result::ok)
+        .filter_map(|entry| {
+            let path = entry.path();
+            let id: i64 = path
+                .file_stem()?
+                .to_str()
+                .filter(|stem| stem.bytes().all(|byte| byte.is_ascii_digit()))?
+                .parse()
+                .ok()?;
+            let media_id = MediaId::new(id);
+            if sharded_path(root, media_id) != path {
+                return None;
+            }
+            let metadata = entry.metadata().ok()?;
+            metadata.is_file().then_some(CachedImage {
+                media_id,
+                size: metadata.len(),
+            })
+        })
+        .collect()
 }
 
 /// Emplacement d'une image d'un cache : `<root>/000/000123.jpg`, mille

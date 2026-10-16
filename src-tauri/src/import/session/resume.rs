@@ -87,7 +87,7 @@ pub fn register_recovered_copies(
             unreadable: Vec::new(),
             copy: None,
         };
-        let prepared = session.prepare(&files, &CancellationToken::default())?;
+        let prepared = session.prepare(&files, &CancellationToken::default(), |_| {})?;
         let placed: Vec<Placed<'_, '_>> = prepared
             .iter()
             .map(|file| Placed {

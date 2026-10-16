@@ -359,7 +359,7 @@ export function App() {
       />
       <EditNoticeToast notice={edits.notice} />
       <EditNoticeToast notice={versionsNotice} />
-      <JobIndicator jobs={jobs.jobs} />
+      <JobIndicator jobs={jobs.jobs} remaining={jobs.remaining} />
       {importScreen !== null && isCatalogReady && (
         <ImportView
           key={importScreen.key}

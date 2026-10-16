@@ -61,6 +61,16 @@ impl Workspace {
         &self.root
     }
 
+    /// Name shown for the catalog (in the window title): the name of its
+    /// workspace folder, or the whole path for a disk root.
+    #[must_use]
+    pub fn name(&self) -> String {
+        self.root.file_name().map_or_else(
+            || self.root.display().to_string(),
+            |name| name.to_string_lossy().into_owned(),
+        )
+    }
+
     /// Fichier du catalogue.
     #[must_use]
     pub fn catalog_path(&self) -> PathBuf {

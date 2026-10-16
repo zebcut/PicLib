@@ -15,6 +15,9 @@
   gap: var(--space-4);
   width: 100%;
   max-width: 520px;
+  /* Never taller than the window: the body scrolls, the title and the
+     buttons stay visible. */
+  max-height: 100%;
   padding: var(--space-6);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
@@ -23,6 +26,7 @@
 }
 
 .title {
+  flex: none;
   margin: 0;
   font-size: var(--font-size-large);
   font-weight: 600;
@@ -32,10 +36,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  min-height: 0;
+  overflow-y: auto;
   line-height: 1.4;
 }
 
 .actions {
+  flex: none;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;

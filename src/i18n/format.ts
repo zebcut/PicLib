@@ -61,6 +61,33 @@ export function counted(value: number): { count: number; formatted: string } {
 }
 
 /**
+ * Formats a ratio (0 to 1) as a whole percentage, rounded down so that 100 %
+ * only shows once everything is done ("42 %" in French, "42%" in English).
+ *
+ * @param language langue à utiliser ; par défaut, celle de l'interface.
+ */
+export function formatPercent(
+  ratio: number,
+  language: string = i18next.language,
+): string {
+  return new Intl.NumberFormat(language, {
+    style: "percent",
+    maximumFractionDigits: 0,
+  }).format(Math.floor(ratio * 100) / 100);
+}
+
+/**
+ * Values for a "{{done}} of {{total}}" message: `count` picks the plural,
+ * `done` and `total` are formatted in the interface language.
+ */
+export function progressCounts(
+  done: number,
+  total: number,
+): { count: number; done: string; total: string } {
+  return { count: done, done: formatCount(done), total: formatCount(total) };
+}
+
+/**
  * Formate une durée de vidéo comme un lecteur : « 0:07 », « 12:34 »,
  * « 1:02:03 ». Les secondes sont arrondies à l'inférieur.
  */

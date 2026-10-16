@@ -3,6 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { subscribeToJobs } from "../services/jobs";
 import type { JobUpdate } from "../services/jobs";
 import { isQuietXmpWrite } from "../services/xmp";
+import { nextStart, remainingMs } from "./jobEstimates";
+import type { ProgressStart } from "./jobEstimates";
 
 /** Tâches de fond connues de l'interface. */
 export interface Jobs {
@@ -12,6 +14,11 @@ export interface Jobs {
    * l'ordre de lancement.
    */
   jobs: JobUpdate[];
+  /**
+   * Estimated milliseconds left, by job id, for the running jobs that know
+   * their total and have run long enough to estimate.
+   */
+  remaining: ReadonlyMap<number, number>;
   /** Oublie une tâche terminée, une fois son résultat vu. */
   dismiss: (jobId: number) => void;
   /**
@@ -57,6 +64,9 @@ export function useJobs(): Jobs {
   const [jobsById, setJobsById] = useState<ReadonlyMap<number, JobUpdate>>(
     () => new Map(),
   );
+  const [remaining, setRemaining] = useState<ReadonlyMap<number, number>>(
+    () => new Map(),
+  );
   const [finishedImports, setFinishedImports] = useState(0);
   const [thumbnailUpdates, setThumbnailUpdates] = useState(0);
   const [finishedTrash, setFinishedTrash] = useState(0);
@@ -72,8 +82,17 @@ export function useJobs(): Jobs {
     // Le cœur ne propose pas de désabonnement : après le démontage, les
     // messages reçus sont simplement ignorés.
     let isActive = true;
+    const starts = new Map<number, ProgressStart>();
     subscribeToJobs((update) => {
       if (!isActive) return;
+      const estimate = estimateRemaining(starts, update, Date.now());
+      setRemaining((previous) => {
+        if (previous.get(update.id) === estimate) return previous;
+        const next = new Map(previous);
+        if (estimate === undefined) next.delete(update.id);
+        else next.set(update.id, estimate);
+        return next;
+      });
       if (update.kind.kind === "import" && update.status.status !== "running") {
         setFinishedImports((count) => count + 1);
       }
@@ -152,6 +171,7 @@ export function useJobs(): Jobs {
   return useMemo(
     () => ({
       jobs: [...jobsById.values()],
+      remaining,
       dismiss,
       finishedImports,
       finishedTrash,
@@ -163,6 +183,7 @@ export function useJobs(): Jobs {
     }),
     [
       jobsById,
+      remaining,
       dismiss,
       finishedImports,
       finishedTrash,
@@ -173,4 +194,28 @@ export function useJobs(): Jobs {
       editedVersionsAdded,
     ],
   );
+}
+
+/**
+ * Updates the starting points with `update` and returns the time left for
+ * its job; `undefined` when there is none to show.
+ */
+function estimateRemaining(
+  starts: Map<number, ProgressStart>,
+  update: JobUpdate,
+  time: number,
+): number | undefined {
+  const { status } = update;
+  if (status.status !== "running" || status.total === null) {
+    starts.delete(update.id);
+    return undefined;
+  }
+  const start = nextStart(
+    starts.get(update.id),
+    status.progress,
+    status.total,
+    time,
+  );
+  starts.set(update.id, start);
+  return remainingMs(start, status.progress, status.total, time) ?? undefined;
 }

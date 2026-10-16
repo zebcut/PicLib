@@ -30,6 +30,15 @@ pub fn unsigned(value: Option<&EntryValue>) -> Option<u64> {
     }
 }
 
+/// Image or video dimension in pixels. Some software writes 0 when it
+/// re-saves a file: a zero is treated as missing (the catalog only stores
+/// positive sizes; the real one is read when the image is decoded).
+pub fn pixel_size(value: Option<&EntryValue>) -> Option<u32> {
+    unsigned(value)
+        .and_then(|value| u32::try_from(value).ok())
+        .filter(|&size| size > 0)
+}
+
 /// Nombre décimal, depuis une fraction EXIF ou un nombre ; `None` pour une
 /// valeur non finie ou nulle au dénominateur.
 pub fn decimal(value: Option<&EntryValue>) -> Option<f64> {

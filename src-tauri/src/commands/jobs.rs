@@ -15,6 +15,7 @@ use super::editor_watch::EditedVersionsSummary;
 use super::file_metadata::FileMetadataSummary;
 use super::folder_analysis::FolderAnalysisSummary;
 use super::import::ImportSummary;
+use super::maintenance::{CatalogCheckSummary, CatalogCleanupSummary};
 use super::missing::MissingSummary;
 use super::places::PlacesSummary;
 use super::thumbnails::ThumbnailsSummary;
@@ -71,6 +72,10 @@ pub enum JobKind {
         /// Fichiers reconnus.
         count: u32,
     },
+    /// Check of the catalog before a cleanup.
+    CatalogCheck,
+    /// Cleanup and optimization of the catalog.
+    CatalogCleanup,
 }
 
 /// Résultat d'une tâche terminée avec succès.
@@ -122,6 +127,16 @@ pub enum JobResult {
         /// Chiffres clés.
         summary: EditedVersionsSummary,
     },
+    /// What a cleanup would do.
+    CatalogCheck {
+        /// Chiffres clés.
+        summary: CatalogCheckSummary,
+    },
+    /// What a cleanup did.
+    CatalogCleanup {
+        /// Chiffres clés.
+        summary: CatalogCleanupSummary,
+    },
 }
 
 /// Échec prévu d'une tâche.
@@ -157,6 +172,10 @@ pub enum JobFailure {
     },
     /// Le catalogue n'a pas pu être lu ou écrit.
     CatalogError,
+    /// The catalog failed its integrity check: it was not cleaned up.
+    CatalogDamaged,
+    /// The backup made before a cleanup failed: nothing was changed.
+    BackupFailed,
 }
 
 /// État d'une tâche, tel que reçu par l'interface.

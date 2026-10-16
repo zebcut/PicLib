@@ -5,7 +5,7 @@ import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import jobStyles from "../../components/jobs/JobDialogs.module.css";
 import { UnreadableLines } from "../../components/jobs/Lines";
-import { counted, formatBytes } from "../../i18n/format";
+import { counted, formatBytes, progressCounts } from "../../i18n/format";
 import {
   chooseImportSource,
   forgetImportSource,
@@ -416,10 +416,10 @@ function AnalysisContent({
         <p className={styles.placeholder} role="status">
           {analysis.total === null
             ? t("jobs.filesFound", counted(analysis.progress))
-            : t("importScreen.readingDates", {
-                done: analysis.progress,
-                total: analysis.total,
-              })}
+            : t(
+                "importScreen.readingDates",
+                progressCounts(analysis.progress, analysis.total),
+              )}
         </p>
       );
     case "failed":

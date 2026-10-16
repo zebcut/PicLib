@@ -371,7 +371,16 @@ impl<'f> Session<'_> {
         for batch in &batches {
             // Les métadonnées sont lues sans bloquer le catalogue : c'est la
             // partie lente (lecture des fichiers).
-            let prepared = self.prepare(batch, cancellation)?;
+            let prepared = if self.copy.is_some() {
+                // A copy reports its progress as files are copied.
+                self.prepare(batch, cancellation, |_| {})?
+            } else {
+                // By reference, reading is the whole work: it is reported
+                // per file, or a batch could look stuck for minutes.
+                self.prepare(batch, cancellation, |read| {
+                    on_progress(processed + read, total);
+                })?
+            };
             if self.copy.is_some() {
                 // Chaque groupe est inscrit au catalogue dès sa copie.
                 self.copy_batch(catalog, &prepared, cancellation, |copied| {
@@ -399,16 +408,19 @@ impl<'f> Session<'_> {
     /// Lit les métadonnées d'un lot (EXIF, XMP). Un fichier impossible à
     /// ouvrir est noté comme illisible et n'est pas importé ; un fichier aux
     /// métadonnées abîmées est importé avec ce qui a pu être lu.
+    /// `on_read` receives the number of files of the batch read so far.
     fn prepare(
         &mut self,
         batch: &[&'f ScannedFile],
         cancellation: &CancellationToken,
+        mut on_read: impl FnMut(u64),
     ) -> Result<Vec<PreparedFile<'f>>, ImportError> {
         let mut prepared = Vec::with_capacity(batch.len());
-        for &file in batch {
+        for (read, &file) in batch.iter().enumerate() {
             if cancellation.is_cancelled() {
                 return Err(ImportError::Cancelled);
             }
+            on_read(read as u64);
             let Some(file_name) = file.path.file_name().and_then(|name| name.to_str()) else {
                 tracing::warn!(path = %file.path.display(), "file name is not valid UTF-8, skipped");
                 self.unreadable.push(file.path.clone());

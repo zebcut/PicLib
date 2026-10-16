@@ -6,7 +6,7 @@ use std::path::Path;
 use jiff::tz::TimeZone;
 use nom_exif::{MediaParser, MediaSource, TrackInfoTag};
 
-use super::values::{gps_position, text, unsigned, video_capture_time};
+use super::values::{gps_position, pixel_size, text, unsigned, video_capture_time};
 use super::{ExtractedMetadata, MetadataError, RecoveredMetadata};
 use crate::domain::MediaDetails;
 
@@ -24,7 +24,7 @@ pub fn read(path: &Path) -> Result<ExtractedMetadata, MetadataError> {
         Err(error) => return Err(to_error(error)),
     };
 
-    let pixel = |tag| unsigned(track.get(tag)).and_then(|value| u32::try_from(value).ok());
+    let pixel = |tag| pixel_size(track.get(tag));
     let gps = track.gps_info().and_then(gps_position);
     Ok(ExtractedMetadata {
         capture_time: video_capture_time(track.get(TrackInfoTag::CreateDate), &TimeZone::system()),
