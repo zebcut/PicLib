@@ -148,15 +148,21 @@ fn import_thumbnail_response<R: tauri::Runtime>(
 }
 
 /// Réponse à une demande de vignette : la vignette si elle existe, sinon
-/// « introuvable » (pas encore fabriquée, média inconnu).
+/// « introuvable » (pas encore fabriquée, média inconnu). A thumbnail that
+/// exists but cannot be read is logged: the grid asks again a few times.
 #[must_use]
 pub fn thumbnail_response(cache: Option<&ThumbnailCache>, media_id: MediaId) -> Response<Vec<u8>> {
     let Some(cache) = cache else {
         return status(StatusCode::NOT_FOUND);
     };
-    match std::fs::read(cache.path_for(media_id)) {
+    let path = cache.path_for(media_id);
+    match std::fs::read(&path) {
         Ok(bytes) => image(bytes, "image/jpeg"),
-        Err(_) => status(StatusCode::NOT_FOUND),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => status(StatusCode::NOT_FOUND),
+        Err(error) => {
+            tracing::warn!(%error, path = %path.display(), "cannot read a thumbnail");
+            status(StatusCode::NOT_FOUND)
+        }
     }
 }
 

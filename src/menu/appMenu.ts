@@ -196,6 +196,14 @@ async function buildAppMenu(
         },
       },
       {
+        id: "library.retryFailedThumbnails",
+        text: t("menu.retryFailedThumbnails"),
+        enabled: actions.photo.enabled,
+        action: () => {
+          actions.trigger("library.retryFailedThumbnails");
+        },
+      },
+      {
         id: "library.operationsLog",
         text: t("menu.operationsLog"),
         enabled: actions.photo.enabled,

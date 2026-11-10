@@ -114,7 +114,8 @@
     "editInNoEditor": "Modifier dans un éditeur externe",
     "editInSubmenu": "Modifier dans",
     "revealInFinder": "Afficher dans le Finder",
-    "cleanUpCatalog": "Nettoyer et optimiser le catalogue…"
+    "cleanUpCatalog": "Nettoyer et optimiser le catalogue…",
+    "retryFailedThumbnails": "Refaire les vignettes en échec"
   },
   "catalogSwitch": {
     "openDialogTitle": "Choisissez le dossier du catalogue PicLib à ouvrir",

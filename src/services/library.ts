@@ -174,6 +174,14 @@ export function mapTileUrlTemplate(): string {
   return `${convertFileSrc("", IMAGE_SCHEME)}tile/{z}/{x}/{y}`;
 }
 
+/**
+ * Forgets the failed thumbnails and starts making them again (Library ▸
+ * Retry Failed Thumbnails). Resolves to how many will be tried again.
+ */
+export async function retryFailedThumbnails(): Promise<number> {
+  return commands.retryFailedThumbnails();
+}
+
 /** Cherche de nouveau les fichiers de tout le catalogue (tâche de fond). */
 export async function checkMissingFiles(): Promise<void> {
   await commands.checkMissingFiles();

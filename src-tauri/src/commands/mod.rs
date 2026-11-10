@@ -171,6 +171,7 @@ pub fn specta_builder() -> Builder<tauri::Wry> {
         editor_watch::get_edit_info,
         editor_watch::trash_unmodified_copy,
         thumbnails::refresh_replaced_files,
+        thumbnails::retry_failed_thumbnails,
         keywords::get_keyword_panel,
         keywords::add_keywords,
         keywords::remove_keyword,

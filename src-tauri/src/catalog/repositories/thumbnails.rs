@@ -134,6 +134,16 @@ pub fn record_failed(
     Ok(())
 }
 
+/// Forgets every failed thumbnail, so that the next pass tries them again
+/// (a failure may have been passing). Returns how many were forgotten.
+///
+/// # Errors
+///
+/// Échoue si la base est illisible ou verrouillée en écriture.
+pub fn forget_failed(connection: &Connection) -> Result<usize, CatalogError> {
+    Ok(connection.execute("DELETE FROM thumbnails WHERE status = 'failed'", [])?)
+}
+
 /// État de la vignette d'un média.
 ///
 /// # Errors

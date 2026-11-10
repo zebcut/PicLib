@@ -854,6 +854,11 @@ export const commands = {
 	 */
 	refreshReplacedFiles: (mediaIds: number[]) => __TAURI_INVOKE<number>("refresh_replaced_files", { mediaIds }),
 	/**
+	 *  Library ▸ "Retry Failed Thumbnails": forgets the recorded failures and
+	 *  starts a pass. Returns how many thumbnails will be tried again.
+	 */
+	retryFailedThumbnails: () => __TAURI_INVOKE<number>("retry_failed_thumbnails"),
+	/**
 	 *  Mots-clés des médias sélectionnés, avec leurs parents.
 	 * 
 	 *  # Errors

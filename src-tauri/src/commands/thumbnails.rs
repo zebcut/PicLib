@@ -12,6 +12,7 @@ use tauri::{AppHandle, Manager};
 
 use super::jobs::{AppJobManager, JobFailure, JobKind, JobResult};
 use crate::catalog::Catalog;
+use crate::catalog::repositories::thumbnails;
 use crate::domain::MediaId;
 use crate::jobs::{JobContext, JobError, PassScheduler};
 use crate::replaced_files;
@@ -130,6 +131,34 @@ pub(super) fn refresh_replaced(app: &AppHandle, ids: &[MediaId]) -> usize {
         Ok(_) => 0,
         Err(error) => {
             tracing::warn!(%error, "cannot refresh the replaced files");
+            0
+        }
+    }
+}
+
+/// Library ▸ "Retry Failed Thumbnails": forgets the recorded failures and
+/// starts a pass. Returns how many thumbnails will be tried again.
+#[allow(clippy::needless_pass_by_value)]
+#[tauri::command]
+#[specta::specta]
+pub async fn retry_failed_thumbnails(app: AppHandle) -> u32 {
+    let Some(catalog) = app.try_state::<Mutex<Catalog>>() else {
+        return 0;
+    };
+    let forgotten = {
+        let catalog = catalog
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        thumbnails::forget_failed(catalog.connection())
+    };
+    match forgotten {
+        Ok(count) => {
+            tracing::info!(count, "failed thumbnails forgotten, trying again");
+            request_thumbnails(&app);
+            u32::try_from(count).unwrap_or(u32::MAX)
+        }
+        Err(error) => {
+            tracing::warn!(%error, "cannot forget the failed thumbnails");
             0
         }
     }

@@ -114,7 +114,8 @@
     "editInNoEditor": "Edit in External Editor",
     "editInSubmenu": "Edit In",
     "revealInFinder": "Show in Finder",
-    "cleanUpCatalog": "Clean Up and Optimize Catalog…"
+    "cleanUpCatalog": "Clean Up and Optimize Catalog…",
+    "retryFailedThumbnails": "Retry Failed Thumbnails"
   },
   "catalogSwitch": {
     "openDialogTitle": "Choose the folder of the PicLib catalog to open",

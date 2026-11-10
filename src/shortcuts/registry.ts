@@ -67,6 +67,7 @@ export type ShortcutId =
   | "metadata.saveToFiles"
   | "metadata.removeLocation"
   | "library.findMissing"
+  | "library.retryFailedThumbnails"
   | "catalog.cleanUp"
   | "library.operationsLog"
   | "keywordSet.1"
@@ -228,6 +229,7 @@ export const DEFAULT_BINDINGS: Readonly<Record<ShortcutId, KeyBinding | null>> =
     "metadata.removeLocation": null,
     // Menu Bibliothèque seulement, comme dans Lightroom.
     "library.findMissing": null,
+    "library.retryFailedThumbnails": null,
     // File menu only, like Lightroom's "Optimize Catalog".
     "catalog.cleanUp": null,
     "library.operationsLog": null,

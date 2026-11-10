@@ -8,7 +8,10 @@ import type { KeywordListItemDto } from "../../services/keywordList";
 import type { GridQuery, GridSource } from "../../services/library";
 import type { MapArea } from "../../services/map";
 import { counted } from "../../i18n/format";
-import { checkMissingFiles } from "../../services/library";
+import {
+  checkMissingFiles,
+  retryFailedThumbnails,
+} from "../../services/library";
 import { checkCatalog } from "../../services/maintenance";
 import { chooseRelocatedFolder } from "../../services/relocation";
 import { checkFolderSidecars } from "../../services/xmp";
@@ -138,6 +141,11 @@ export function LibraryView({
     "library.findMissing": () => {
       checkMissingFiles().catch((error: unknown) => {
         console.error("Failed to look for the missing files", error);
+      });
+    },
+    "library.retryFailedThumbnails": () => {
+      retryFailedThumbnails().catch((error: unknown) => {
+        console.error("Failed to retry the failed thumbnails", error);
       });
     },
     "catalog.cleanUp": () => {

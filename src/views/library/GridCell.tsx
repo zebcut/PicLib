@@ -10,6 +10,7 @@ import type { GridStack } from "../../services/stacks";
 import styles from "./GridView.module.css";
 import { isQuarterTurn, rotationTransform } from "./rotation";
 import { TriageBadges } from "./TriageBadges";
+import { retryVersion, useImageRetry } from "./useImageRetry";
 
 /** Signe de l'état du fichier XMP. */
 const XMP_GLYPHS: Record<GridXmpState, string> = {
@@ -294,21 +295,7 @@ export function Thumbnail({ item }: { item: GridItem }) {
   const { t } = useTranslation();
   switch (item.thumbnail) {
     case "ready":
-      return (
-        <img
-          className={
-            isQuarterTurn(item.rotation)
-              ? [styles.image, styles.turned].join(" ")
-              : styles.image
-          }
-          style={{ transform: rotationTransform(item.rotation) }}
-          src={thumbnailUrl(item.id, item.imageVersion)}
-          // Le nom du fichier est déjà annoncé par la case elle-même.
-          alt=""
-          draggable={false}
-          decoding="async"
-        />
-      );
+      return <ReadyThumbnail item={item} />;
     case "failed":
       return (
         <span className={styles.failed}>{t("library.thumbnailFailed")}</span>
@@ -316,4 +303,35 @@ export function Thumbnail({ item }: { item: GridItem }) {
     case "pending":
       return <span className={styles.placeholder} />;
   }
+}
+
+/**
+ * A thumbnail the catalog says is ready. If it fails to load it is asked
+ * for again a few times; then the waiting placeholder shows instead of a
+ * broken image.
+ */
+function ReadyThumbnail({ item }: { item: GridItem }) {
+  const retry = useImageRetry(
+    `${String(item.id)}:${String(item.imageVersion)}`,
+  );
+  if (retry.gaveUp) return <span className={styles.placeholder} />;
+  return (
+    <img
+      className={
+        isQuarterTurn(item.rotation)
+          ? [styles.image, styles.turned].join(" ")
+          : styles.image
+      }
+      style={{ transform: rotationTransform(item.rotation) }}
+      src={thumbnailUrl(
+        item.id,
+        retryVersion(item.imageVersion, retry.attempt),
+      )}
+      // Le nom du fichier est déjà annoncé par la case elle-même.
+      alt=""
+      draggable={false}
+      decoding="async"
+      onError={retry.onError}
+    />
+  );
 }
